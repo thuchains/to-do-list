@@ -45,8 +45,10 @@ class ToDoList:
             return False
         
         task.status = True
+        
+        print(f"Task: {task.data} completed!") 
+        return True
 
-        print(f"{task.data} completed!") 
     
     def remove_task(self, position):
         """
@@ -66,6 +68,7 @@ class ToDoList:
         # TODO: Implement this method
         position -= 1
         remove_task = self.tasks.delete_at_position(position)
+        return remove_task
 
     
     def view_all_tasks(self):
@@ -80,8 +83,15 @@ class ToDoList:
             3. Call dentist - Incomplete
         """
         # TODO: Implement this method
-        self.tasks.traverse()
-    
+        if self.tasks.is_empty():
+            print("The list is empty") 
+
+        node = self.tasks.get_at_position(position=0)
+        while node:
+            status = "Complete" if node.status == True else "Incomplete"
+            print(f"{node.data} - {status}")
+            node = node.next
+
     def test_todo_list(self):
         """Test function to verify ToDoList functionality"""
         print("=== Testing To-Do List Implementation ===\n")

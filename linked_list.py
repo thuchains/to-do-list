@@ -5,8 +5,6 @@ class Node:
         self.next = None #This links us to the next node in the chain
 
 
-
-
 class LinkedList:
     def __init__(self):
         self.head = None #Keeps track of the begining of the chain, If I know where the chain starts I can find anything in the chain
@@ -44,18 +42,31 @@ class LinkedList:
             current = current.next
             counter += 1
 
-    def insert_at_position(self, position, data):
+    def insert_at_position(self, position, data, status):
         """adding a node at a position (0-index)"""
-        new_node = Node(data) #create new node
+        new_node = Node(data, status) #create new node
 
+        if position == 0:
+            new_node.next = self.head
+            self.head = new_node
+            return
+        
         current = self.head #Starting from the front of the list
         counter = 0
         while counter < position - 1: #Traverse down the list to the object just in-front of the position we want to add to
+            if not current: # if end of the list was reached before finding intended position
+                return False
+            
             current = current.next
             counter += 1
 
+        if not current: # if end of the list was reached before finding intended position
+            return False
+        
         new_node.next = current.next #New Node points to currents.next node
         current.next = new_node #Current Node points to new node
+
+        return True
 
     def get_at_position(self,position):
         if self.is_empty():
@@ -73,9 +84,17 @@ class LinkedList:
         return current
     
     def delete_at_position(self, position):
+        if position < 0:
+             return False
+        
         if self.is_empty():
             return False
         
+        if position == 0:
+            removed = self.head
+            self.head = self.head.next
+            return removed
+
         current = self.head
         counter = 0
         #Move to the node just infront of the node we want to remove
@@ -85,14 +104,14 @@ class LinkedList:
             
             current = current.next
             counter += 1
-            
+
         if not current.next:
             return False
 
         #Set the current nodes next, to the node we want to remove's next
-        removing = current.next
         current.next = current.next.next
-        return removing
+
+        return True
 
 
 
